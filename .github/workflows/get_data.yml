@@ -1,16 +1,10 @@
-# This is a basic workflow to help you get started with Actions
-
 name: "Get Data"
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   schedule:
-    - cron: '25 00 * * *'
+    - cron: '25 9 * * *'
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   getdata:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -19,22 +13,17 @@ jobs:
       GIT_AUTHOR_EMAIL: "octobot@github.kom"
       GIT_COMMITTER_EMAIL: "cotobot@github.kom"
     
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    # Runs a single command using the runners shell
     - name: Downloading data
       run: |
         git switch -c data
         mkdir -p data
         curl -Lo "data/$(date --iso-8601=date)" https://www.arcgis.com/sharing/rest/content/items/f10774f1c63e40168479a1feb6c7ca74/data
 
-    # Runs a set of commands using the runners shell
     - name: Commiting data
       run: |
         git add data
