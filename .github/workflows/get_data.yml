@@ -9,9 +9,9 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GIT_AUTHOR_NAME: "GitHub Action"
-      GIT_COMMITTER_NAME: "GitHub Action"
       GIT_AUTHOR_EMAIL: "octobot@github.kom"
-      GIT_COMMITTER_EMAIL: "cotobot@github.kom"
+      # GIT_COMMITTER_NAME: "GitHub Action"
+      # GIT_COMMITTER_EMAIL: "cotobot@github.kom"
 
     runs-on: ubuntu-latest
 
