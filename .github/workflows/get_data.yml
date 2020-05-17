@@ -12,7 +12,7 @@ jobs:
       GIT_COMMITTER_NAME: "GitHub Action"
       GIT_AUTHOR_EMAIL: "octobot@github.kom"
       GIT_COMMITTER_EMAIL: "cotobot@github.kom"
-    
+
     runs-on: ubuntu-latest
 
     steps:
@@ -20,12 +20,11 @@ jobs:
 
     - name: Downloading data
       run: |
-        git switch -c data
-        mkdir -p data
-        curl -Lo "data/$(date --iso-8601=date)" https://www.arcgis.com/sharing/rest/content/items/f10774f1c63e40168479a1feb6c7ca74/data
+        git switch autodata
+        curl -Lo "data/silo/$(date --iso-8601=date).csv" https://www.arcgis.com/sharing/rest/content/items/f10774f1c63e40168479a1feb6c7ca74/data
 
     - name: Commiting data
       run: |
-        git add data
+        git add "data/silo"
         git commit --no-edit -m "Update data"
         git push "https://woefe:$GITHUB_TOKEN@github.com/woefe/covid19stats.git" data
