@@ -17,14 +17,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: autodata
 
     - name: Downloading data
-      run: |
-        git switch autodata
-        curl -Lo "data/silo/$(date --iso-8601=date).csv" https://www.arcgis.com/sharing/rest/content/items/f10774f1c63e40168479a1feb6c7ca74/data
+      run: curl -Lo "data/silo/$(date --iso-8601=date).csv" https://www.arcgis.com/sharing/rest/content/items/f10774f1c63e40168479a1feb6c7ca74/data
 
     - name: Commiting data
       run: |
         git add "data/silo"
         git commit --no-edit -m "Update data"
-        git push "https://woefe:$GITHUB_TOKEN@github.com/woefe/covid19stats.git" data
+        git push "https://woefe:$GITHUB_TOKEN@github.com/woefe/covid19stats.git" autodata
