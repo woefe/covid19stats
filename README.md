@@ -9,6 +9,16 @@
 Then you need to make sure the notebook is **trusted** to be able to execute the JavaScript widgets.
 Finally, you probably have to re-run all cells to get the plots and interactive tables.
 
+## What's so special about this notebook?
+To be honest, nothing. Almost all plots are also in the [RKI Dashboard](https://experience.arcgis.com/experience/478220a4c454480e823b17327b2bf1d4).
+What's special though is the data.
+As far as I have seen, there is no other repository that keeps track of **all** CSV data published by the RKI **every day**.
+This data can be very useful to calculate the estimated active cases over time.
+Hence, I take daily snapshots of the data published by the RKI on the [autodata](https://github.com/woefe/covid19stats/tree/autodata) branch (automated with [Github Actions](https://github.com/woefe/covid19stats/blob/master/.github/workflows/get_data.yml)).
+Unfortunately, some of data from before Mai 2020 is missing.
+
+
 ## Contribute?
+- 📄 You found the April 2020 (or earlier) data? Post a link in a [new issue](https://github.com/woefe/covid19stats/issues/new)!💕
 - 😎 You created some cool new plots and visualizations? Create a Pull Request!🍴
 - 💡 You have ideas for new plots? [Create an issue](https://github.com/woefe/covid19stats/issues/new)!✨
