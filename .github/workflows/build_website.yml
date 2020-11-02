@@ -12,16 +12,17 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Set up repo
+        uses: actions/checkout@v2
         with:
           ref: master
      
-      - name: Download data
-        run: |
-          curl -LO https://github.com/woefe/covid19stats/archive/autodata.zip
-          unzip -d /tmp autodata.zip
-          rm autodata.zip
+      - name: Set up data
+        uses: actions/checkout@v2
+        with:
+          repository: woefe/covid19stats
+          ref: autodata
+          path: autodata
 
       - name: Set up Python
         uses: actions/setup-python@v2
