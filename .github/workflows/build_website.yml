@@ -22,6 +22,7 @@ jobs:
         with:
           repository: woefe/covid19stats
           ref: autodata
+          lfs: true
           path: autodata
 
       - name: Set up Python
