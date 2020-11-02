@@ -3,7 +3,6 @@ name: build_website
 on:
   push:
     branches: [ autodata ]
-  workflow_dispatch:
 
 jobs:
   build:
@@ -17,13 +16,12 @@ jobs:
         with:
           ref: master
      
-      - name: Set up data
-        uses: actions/checkout@v2
-        with:
-          repository: woefe/covid19stats
-          ref: autodata
-          lfs: true
-          path: autodata
+      - name: Download data
+        run: |
+          curl -LO https://github.com/woefe/covid19stats/archive/autodata.zip
+          mkdir autodata
+          unzip -d autodata autodata.zip
+          rm autodata.zip
 
       - name: Set up Python
         uses: actions/setup-python@v2
