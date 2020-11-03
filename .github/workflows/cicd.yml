@@ -1,0 +1,71 @@
+name: CI/CD
+
+on:
+  schedule:
+    - cron: '25 9 * * *'
+
+jobs:
+  get-data:
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: autodata
+
+    - name: Downloading data
+      run: curl -Lo "data/silo/$(date --iso-8601=date).csv" https://www.arcgis.com/sharing/rest/content/items/f10774f1c63e40168479a1feb6c7ca74/data
+
+    - name: Commiting data
+      run: |
+        git config user.email "octobot@github.kom"
+        git config user.name "GitHub Action"
+        git add "data/silo"
+        git commit --no-edit -m "Update data"
+        git push "https://woefe:$GITHUB_TOKEN@github.com/woefe/covid19stats.git" autodata
+
+  build-website:
+    runs-on: ubuntu-latest
+    needs: [get-data]
+
+    steps:
+      - name: Set up repo
+        uses: actions/checkout@v2
+        with:
+          ref: master
+     
+      - name: Download data
+        run: |
+          curl -LO https://github.com/woefe/covid19stats/archive/autodata.zip
+          mkdir autodata
+          unzip -d autodata autodata.zip
+          rm autodata.zip
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel
+          pip install -r requirements.txt
+          
+      - name: Convert notebook to HTML
+        run: |
+          jupyter nbconvert \
+            --to html \
+            --no-input \
+            --template lab_condensed \
+            --TemplateExporter.extra_template_basedirs="nbconvert_template" \
+            --execute \
+            --output index.html \
+            condensed.ipynb
+      - name: Upload index.html artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: index.html
+          path: index.html
