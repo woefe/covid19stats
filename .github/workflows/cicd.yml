@@ -26,6 +26,29 @@ jobs:
         git add "data/silo"
         git commit --no-edit -m "Update data"
         git push "https://woefe:$GITHUB_TOKEN@github.com/woefe/covid19stats.git" autodata
+    
+    # The filesize should always be increasing. Start checking after 2020-11-05, because some earlier files are smaller or duplicated
+    - name: Check size increase
+      run: |
+        prev_len=0
+        for file in $(git diff-tree --no-commit-id --name-only -r caace66d3d2ce49c7d006179dc79a91ab6cb5436 HEAD)
+        do
+          curr_len=$(wc -l < $file)
+          if ((prev_len >= curr_len))
+          then 
+            echo "bad file $file"
+            exit 1
+          fi
+          prev_len=$curr_len
+        done
+        
+    # Alternative: Checks for duplicates after commit on 2020-11-05. Sometimes there is still an old file at arcgis.
+    # Already covered by file size increase (for now at least; if file format does not change).
+    #- name: Check duplicates  
+    #  run: |
+    #    duplicates=$(git diff-tree --no-commit-id --name-only -r caace66d3d2ce49c7d006179dc79a91ab6cb5436 HEAD | xargs sha1sum | awk '{print $2 " " $1}' | uniq -f1 -D)
+    #    if [ -n "$duplicates" ]; then echo 'Error: Duplicates found:'; echo "$duplicates"; false; fi
+        
 
   build-website:
     runs-on: ubuntu-latest
