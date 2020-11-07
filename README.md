@@ -1,4 +1,4 @@
-# A Jupyter notebooks to work with RKI COVID 19 data
+# Jupyter notebooks to work with RKI COVID 19 data
 
 
 The [condensed notebook](./condensed.ipynb) without source code cells is published at [covidstats.woefe.com](https://covidstats.woefe.com)
@@ -10,8 +10,9 @@ You have to make the notebook **trusted** to be able to execute the JavaScript w
 Finally, you probably have to re-run all cells to get the plots and interactive tables.
 
 ## What's so special about this notebook?
-To be honest, nothing. Similar plots are also in the [RKI Dashboard](https://experience.arcgis.com/experience/478220a4c454480e823b17327b2bf1d4).
-What's special though is the data.
+To be honest, nothing really.
+Similar plots can also be found elsewhere, for example in the [official RKI dashboard](https://experience.arcgis.com/experience/478220a4c454480e823b17327b2bf1d4).
+What's worth pointing out, however, is the data collected here.
 When I started this project I couldn't find any other repository that keeps track of **all** CSV data published by the RKI **every day**.
 This data can be very useful to calculate the estimated active cases over time.
 Hence, I take daily snapshots of the data published by the RKI on the [autodata](https://github.com/woefe/covid19stats/tree/autodata) branch (automated with [Github Actions](https://github.com/woefe/covid19stats/blob/master/.github/workflows/cicd.yml)).
