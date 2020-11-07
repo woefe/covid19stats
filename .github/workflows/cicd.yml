@@ -29,18 +29,29 @@ jobs:
     
     # The filesize should always be increasing. Start checking after 2020-11-05, because some earlier files are smaller or duplicated
     - name: Check size increase
+      shell: python
       run: |
-        prev_len=0
-        for file in $(git diff-tree --no-commit-id --name-only -r caace66d3d2ce49c7d006179dc79a91ab6cb5436 HEAD)
-        do
-          curr_len=$(wc -l < $file)
-          if ((prev_len >= curr_len))
-          then 
-            echo "bad file $file"
-            exit 1
-          fi
-          prev_len=$curr_len
-        done
+        import sys
+        from pathlib import Path
+
+        files = sorted(
+            file
+            for file in Path("./data/silo/").glob("*.csv")
+            if file.stem > "2020-11-04"
+        )
+
+        prev_len = 0
+        for file in files:
+            with file.open() as f:
+                curr_len = sum(1 for _ in f)
+            if prev_len >= curr_len:
+                print("Bad file:", str(file))
+                sys.exit(1)
+            prev_len = curr_len
+        
+        if prev_len == 0:
+            print("Inconsistent data detected")
+            sys.exit(1)
         
     # Alternative: Checks for duplicates after commit on 2020-11-05. Sometimes there is still an old file at arcgis.
     # Already covered by file size increase (for now at least; if file format does not change).
